@@ -1,0 +1,30 @@
+﻿@model WebMvc.Models.TriangleModel.TriangleVerticesModel
+
+
+@using (Html.BeginForm())
+{
+
+    if( Model.Vertices != null) { 
+         <table class="table">
+             <tbody>
+             @foreach (var verticeModel in Model.Vertices)
+             {
+                 <tr>
+                     <td width="20px"><b>X Vertice</b></td>
+                     <td width="100px">@verticeModel.X</td>
+
+                     <td width="20px"><b>Y Vertice</b></td>
+                     <td width="100px">@verticeModel.Y</td>
+
+                 </tr>
+             }
+             </tbody>
+         </table>
+         }
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,131 @@
+﻿@using System.Web.Mvc.Html
+@model WebMvc.Models.TriangleModel.TriangleModel
+@{
+    ViewBag.Title = "Traingle  Page";
+}
+
+<style type="text/css">
+    #left {
+        float: left;
+        width: 20%;
+        overflow: hidden;
+    }
+
+    #right {
+        overflow: hidden;
+    }
+</style>
+
+<fieldset>
+
+    <legend>Triangle Vertices</legend>
+
+    <table class="table">
+        <tr>
+            <td vertival-align="top">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formid" }))
+                {
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <div style="horiz-align: left; width: 100%">
+                                    <img src="@Url.Content("~/images/verticechart.png")" alt="" style="width: 400px; height: 400px" />
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <div style="horiz-align: left; width: 100%">
+                                        Select Row and Column
+                                        <br />
+                                        Click Submit Button To Get Vertices
+
+                                    </div>
+                                    <div style="alignment: left;">
+                                        <div id="left">
+                                            @Html.LabelFor(m => m.TriangleStartupModel.RowItems) @Html.DropDownList("rows", Model.TriangleStartupModel.RowItems)
+                                        </div>
+                                        <div id="right">
+
+
+                                            @Html.LabelFor(m => m.TriangleStartupModel.ColumItems) @Html.DropDownList("columns", Model.TriangleStartupModel.ColumItems)
+                                        </div>
+                                        <div id="right">
+                                            <input type="submit" value="Submit" />
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                }
+            </td>
+        </tr>
+
+        <tr  id="trVertices" style="display:none;">
+            <td valign="top" id="tdVertices ">
+                <div id="partial">
+                    @Html.Partial("_vertices", Model.TriangleVerticesModel)
+                </div>               
+            </td>
+        </tr>
+    </table>
+
+
+</fieldset>
+
+
+<script type="text/javascript">
+
+    $(function() {
+
+        $("#formid").submit(function(e) { // note that it's better to use form Id to select form
+            runSearch();
+                e.preventDefault(); // here you stop submitting form
+          
+        });
+
+    });
+
+
+    function runSearch() {
+       // $('#tdVertices').show();
+        //row selected
+        var rowSelected = $('#rows').val();
+
+        var columnSelected = $("#columns").val();
+        $.ajax({
+            data: {
+                rowSelected: rowSelected,
+                columnSelected: columnSelected
+                
+            },
+            url: '@Url.Action("GetVertices", "Home")',
+            type: 'GET',
+            cache: false,
+
+            success: function (result) {
+                $("#partial").html(result);
+                $("#trVertices").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {  
+                //do your own thing  
+                alert(errorThrown);
+                alert(textStatus);
+            }  
+        });
+
+
+   
+
+        //event.preventDefault();
+    };
+
+
+</script>
